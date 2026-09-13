@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 
@@ -30,9 +30,13 @@ export class ProductService {
   }
 
   getProductById(id: number) {
-    return this.products.find((product) => product.id === id);
+    const product = this.products.find((product) => product.id === id);
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    return product;
   }
-
+    
   // Creates a new product and adds it to the products array
   createProduct(createProductDto: CreateProductDto) {
     const newProduct = {
@@ -44,17 +48,37 @@ export class ProductService {
   }
 
   // Updates an existing product with the given id using the data from updateProductDto
-  updateProduct(id: number, updateProductDto: Partial<CreateProductDto>) {
+  updateProduct(id: number, updateProductDto: Partial<UpdateProductDto>) {
+
+    console.log('UpdateProductDto:', updateProductDto); // Log the received DTO for debugging
+
+    const product = this.products.find((product) => product.id === id);
+    console.log('Product :', product); // Log the index of the product to be updated
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+  
+    // // Update the product with the new data
+
+    const updatedProduct = {
+      ...product,
+      ...Object.fromEntries(
+          Object.entries(updateProductDto).filter(([_, value]) => value !== undefined)
+      )
+    };
+    return updatedProduct;
+
+  }
+
+  // Deletes the product with the given id from the products array
+  deleteProduct(id: number) {
     const productIndex = this.products.findIndex((product) => product.id === id);
     if (productIndex === -1) {
-      return {message: 'Product not found'}; // Product not found
+      throw new NotFoundException('Product not found');
     }
-    // Update the product with the new data
-    this.products[productIndex] = {
-      ...this.products[productIndex],
-      ...updateProductDto,
-    };
-    return this.products[productIndex];
+    const deletedProduct = this.products.splice(productIndex, 1);
+    return deletedProduct[0];
   }
 
 }
