@@ -116,3 +116,4 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 ## CLI
 
 nest g controller product
+nest g service product
