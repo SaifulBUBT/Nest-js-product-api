@@ -118,3 +118,5 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 nest g controller product
 nest g service product
 nest g module product
+
+nest g class products/dto/create-product.dto --no-spec --flat
