@@ -60,7 +60,6 @@ export class ProductService {
     }
   
     // // Update the product with the new data
-
     const updatedProduct = {
       ...product,
       ...Object.fromEntries(
@@ -68,6 +67,22 @@ export class ProductService {
       )
     };
     return updatedProduct;
+
+
+    // const productIndex = this.products.findIndex(p => p.id === id);
+
+    // if (productIndex === -1) {
+    //   throw new NotFoundException(`Product with ID ${id} not found`);
+    // }
+
+    // Object.keys(updateProductDto).forEach((key) => {
+    //   if (updateProductDto[key] !== undefined) {
+    //     this.products[productIndex][key] = updateProductDto[key];
+    //   }
+    // });
+
+    // return this.products[productIndex];
+
 
   }
 
