@@ -13,28 +13,28 @@ import { CreateCustomerDto } from './dto/create-customer.dto.js';
 import { PatchCustomerDto } from './dto/patch-customer.dto.js';
 import { UpdateCustomerDto } from './dto/update-customer.dto.js';
 
-@Controller('customer')
+@Controller('customers')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
-  getCustomers() {
+  async getCustomers() {
     return this.customerService.getAllCustomers();
   }
 
   @Get(':id')
-  getCustomerById(@Param('id') id: string) {
+  async getCustomerById(@Param('id') id: string) {
     return this.customerService.getCustomerById(Number(id));
   }
 
   @Post()
-  createCustomer(@Body() createCustomerDto: CreateCustomerDto) {
+  async createCustomer(@Body() createCustomerDto: CreateCustomerDto) {
     // Logic to create a new customer using the data from createCustomerDto
     return this.customerService.createCustomer(createCustomerDto);
   }
 
   @Put(':id')
-  updateCustomer(
+  async updateCustomer(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
@@ -44,7 +44,7 @@ export class CustomerController {
   }
 
   @Patch(':id')
-  patchCustomer(
+  async patchCustomer(
     @Param('id') id: string,
     @Body() patchCustomerDto: PatchCustomerDto,
   ) {
@@ -54,7 +54,7 @@ export class CustomerController {
   }
 
   @Delete(':id')
-  deleteCustomer(@Param('id') id: string) {
+  async deleteCustomer(@Param('id') id: string) {
     // Logic to delete the customer with the given id
     // You can implement this logic in the CustomerService
     return this.customerService.deleteCustomer(Number(id));

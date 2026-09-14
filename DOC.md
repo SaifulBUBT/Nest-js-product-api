@@ -25,3 +25,26 @@ app.useGlobalPipes(
     forbidNonWhitelisted: true, // DTO-তে নেই এমন property পেলে silently remove করবে না; বরং 400 Bad Request error দেবে।
   }),
 );
+
+
+### Supabse(postgreSQL) er sahte nest js connection
+
+npm install @nestjs/config
+
+app.module.ts:
+
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
+export class AppModule {}
+
+
+.env file e:
+DATABASE_URL = postgresql://postgres.igtzyozpnbqkkhpjiwpy:VgOU3EaYxg9umOvw@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres

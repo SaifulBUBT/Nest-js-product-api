@@ -2,8 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 
+import { DatabaseService } from '../database/database.service.js';
+
 @Injectable()
 export class ProductService {
+  constructor(private readonly databaseService: DatabaseService) {}
+
   private products = [
     {
       id: 1,
@@ -25,8 +29,15 @@ export class ProductService {
     },
   ];
 
-  getAllProducts() {
-    return this.products;
+
+  async getAllProducts() {
+    // return this.products;
+
+    // Fetch products from the database using the DatabaseService
+    const result = await this.databaseService.query(
+      'SELECT * FROM products'
+    );
+    return result.rows;
   }
 
   getProductById(id: number) {
