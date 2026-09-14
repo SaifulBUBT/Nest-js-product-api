@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { CreateCustomerDto } from './dto/create-customer.dto.js';
+import { PatchCustomerDto } from './dto/patch-customer.dto.js';
+import { UpdateCustomerDto } from './dto/update-customer.dto.js';
+import { Customer } from './interfaces/customer.interface.js';
 
 @Injectable()
 export class CustomerService {
-  private customers = [
+  private customers: Customer[] = [
     {
       id: 1,
       name: 'John Doe',
@@ -15,11 +19,11 @@ export class CustomerService {
     },
   ];
 
-  getAllCustomers() {
+  getAllCustomers(): Customer[] {
     return this.customers;
   }
 
-  getCustomerById(id: number) {
+  getCustomerById(id: number): Customer {
     const customer = this.customers.find((customer) => customer.id === id);
     if (!customer) {
       throw new Error(`Customer with ID ${id} not found`);
@@ -28,17 +32,17 @@ export class CustomerService {
   }
 
   // POST method to create a new customer
-  createCustomer(data: { name: string; email: string }) {
+  createCustomer(createCustomerDto: CreateCustomerDto): Customer {
     const newCustomer = {
       id: this.customers.length + 1,
-      ...data,
+      ...createCustomerDto,
     };
     this.customers.push(newCustomer);
     return newCustomer;
   }
 
   // PUT method to update an existing customer
-  updateCustomer(id: number, data: { name?: string; email?: string }) {
+  updateCustomer(id: number, updateCustomerDto: UpdateCustomerDto): Customer {
     const customerIndex = this.customers.findIndex(
       (customer) => customer.id === id,
     );
@@ -47,20 +51,35 @@ export class CustomerService {
     }
     this.customers[customerIndex] = {
       ...this.customers[customerIndex],
-      ...data,
+      ...updateCustomerDto,
     };
     return this.customers[customerIndex];
   }
 
   // PATCH method to partially update an existing customer
-  patchCustomer(id: number, data: Partial<{ name: string; email: string }>) {
+  patchCustomer(
+    id: number,
+    patchCustomerDto: Partial<PatchCustomerDto>,
+  ): Customer {
+    console.log('PatchCustomerDto:', patchCustomerDto); // Log the received DTO for debugging
+
     const customer = this.getCustomerById(id);
-    Object.assign(customer, data);
-    return customer;
+    console.log('Customer:', customer); // Log the customer to be updated
+
+    // // Update the customer with the new data
+    const updatedCustomer = {
+      ...customer,
+      ...Object.fromEntries(
+        Object.entries(patchCustomerDto).filter(
+          ([_, value]) => value !== undefined,
+        ),
+      ),
+    };
+    return updatedCustomer;
   }
 
   // DELETE method to remove a customer
-  deleteCustomer(id: number) {
+  deleteCustomer(id: number): Customer {
     const customerIndex = this.customers.findIndex(
       (customer) => customer.id === id,
     );

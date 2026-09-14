@@ -9,6 +9,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service.js';
+import { CreateCustomerDto } from './dto/create-customer.dto.js';
+import { PatchCustomerDto } from './dto/patch-customer.dto.js';
+import { UpdateCustomerDto } from './dto/update-customer.dto.js';
 
 @Controller('customer')
 export class CustomerController {
@@ -25,29 +28,29 @@ export class CustomerController {
   }
 
   @Post()
-  createCustomer(@Body() data: { name: string; email: string }) {
+  createCustomer(@Body() createCustomerDto: CreateCustomerDto) {
     // Logic to create a new customer using the data from createCustomerDto
-    return this.customerService.createCustomer(data);
+    return this.customerService.createCustomer(createCustomerDto);
   }
 
   @Put(':id')
   updateCustomer(
     @Param('id') id: string,
-    @Body() data: { name: string; email: string },
+    @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
     // Logic to update the customer with the given id using the data from updateCustomerDto
     // You can implement this logic in the CustomerService
-    return this.customerService.updateCustomer(Number(id), data);
+    return this.customerService.updateCustomer(Number(id), updateCustomerDto);
   }
 
   @Patch(':id')
   patchCustomer(
     @Param('id') id: string,
-    @Body() data: Partial<{ name: string; email: string }>,
+    @Body() patchCustomerDto: PatchCustomerDto,
   ) {
     // Logic to partially update the customer with the given id using the data from updateCustomerDto
     // You can implement this logic in the CustomerService
-    return this.customerService.patchCustomer(Number(id), data);
+    return this.customerService.patchCustomer(Number(id), patchCustomerDto);
   }
 
   @Delete(':id')
