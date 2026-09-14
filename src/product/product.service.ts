@@ -66,6 +66,8 @@ export class ProductService {
           Object.entries(updateProductDto).filter(([_, value]) => value !== undefined)
       )
     };
+    const productIndex = this.products.findIndex((product) => product.id === id);
+    this.products[productIndex] = updatedProduct;
     return updatedProduct;
 
 

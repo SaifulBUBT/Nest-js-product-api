@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto.js';
 import { PatchCustomerDto } from './dto/patch-customer.dto.js';
 import { UpdateCustomerDto } from './dto/update-customer.dto.js';
@@ -26,7 +26,7 @@ export class CustomerService {
   getCustomerById(id: number): Customer {
     const customer = this.customers.find((customer) => customer.id === id);
     if (!customer) {
-      throw new Error(`Customer with ID ${id} not found`);
+      throw new NotFoundException(`Customer with ID ${id} not found`);
     }
     return customer;
   }
@@ -37,6 +37,7 @@ export class CustomerService {
       id: this.customers.length + 1,
       ...createCustomerDto,
     };
+    
     this.customers.push(newCustomer);
     return newCustomer;
   }
@@ -47,7 +48,7 @@ export class CustomerService {
       (customer) => customer.id === id,
     );
     if (customerIndex === -1) {
-      throw new Error(`Customer with ID ${id} not found`);
+      throw new NotFoundException(`Customer with ID ${id} not found`);
     }
     this.customers[customerIndex] = {
       ...this.customers[customerIndex],
@@ -75,6 +76,12 @@ export class CustomerService {
         ),
       ),
     };
+
+    console.log('UpdatedCustomer:', updatedCustomer); // Log the updated customer for debugging
+
+    const customerIndex = this.customers.findIndex((customer) => customer.id === id);
+    this.customers[customerIndex] = updatedCustomer; // Update the customer in the array with the new data
+
     return updatedCustomer;
   }
 
@@ -84,7 +91,7 @@ export class CustomerService {
       (customer) => customer.id === id,
     );
     if (customerIndex === -1) {
-      throw new Error(`Customer with ID ${id} not found`);
+      throw new NotFoundException(`Customer with ID ${id} not found`);
     }
     const deletedCustomer = this.customers.splice(customerIndex, 1);
     return deletedCustomer[0];
