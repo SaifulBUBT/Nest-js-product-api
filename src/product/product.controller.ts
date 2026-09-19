@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/commo
 import { ProductService } from './product.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
+import { PatchProductDto } from './dto/patch-product.dto.js';
 
 @Controller('products')
 export class ProductController {
@@ -13,24 +14,24 @@ export class ProductController {
   }
 
   @Get(':id')
-  getProductById(@Param('id') id: string) {
+  async getProductById(@Param('id') id: string) {
     return this.productService.getProductById(Number(id));
   }
 
   @Post()
-  createProduct(@Body() createProductDto: CreateProductDto) {
+  async createProduct(@Body() createProductDto: CreateProductDto) {
     // Logic to create a new product using the data from createProductDto
    
     return this.productService.createProduct(createProductDto);
   }
 
   @Patch(':id')
-  updateProduct(
+  patchProduct(
     @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto) {
+    @Body() patchProductDto: PatchProductDto) {
     // Logic to update the product with the given id using the data from updateProductDto
     // You can implement this logic in the ProductService
-    return this.productService.updateProduct(Number(id), updateProductDto);
+    return this.productService.patchProduct(Number(id), patchProductDto);
   } 
 
   @Delete(':id')

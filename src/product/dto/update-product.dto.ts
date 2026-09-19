@@ -1,16 +1,16 @@
-import { IsOptional, IsString, IsNumber, Min } from 'class-validator';
+import { IsString, IsNumber, Min, IsNotEmpty } from 'class-validator';
 
 export class UpdateProductDto {
     @IsString()
-    @IsOptional()
+    @IsNotEmpty()
     title?: string;
 
     @IsNumber()
     @Min(0)
-    @IsOptional()
+    @IsNotEmpty()
     price?: number;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsNumber()
     @Min(0)
     stock?: number;
