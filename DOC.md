@@ -66,3 +66,10 @@ employees.controller.ts
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoic2FpZnVsQGdtYWlsLmNvbSIsImlhdCI6MTc4OTUzODI0NywiZXhwIjoxNzg5NTQxODQ3fQ.AtcLs4J0CPMkryRSO-LpZSt3V1NGo5Fs_FkzNAdb4q4"
 
 
+
+// @Query()
+GET /product/25?sort=price&order=desc
+          │  │       │
+          │  │       └── Query
+          │  └────────── Param
+          └───────────── Route

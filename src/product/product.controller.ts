@@ -1,21 +1,27 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { ProductService } from './product.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 import { PatchProductDto } from './dto/patch-product.dto.js';
+import { ProductQueryDto } from './dto/product-query.dto.js';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async getProducts() {
-    return this.productService.getAllProducts();
+  async getProducts(
+    @Query() query: ProductQueryDto,
+  ) {
+
+    console.log('Search string: ',query);
+
+    return this.productService.getAllProducts(query);
   }
 
   @Get(':id')
-  async getProductById(@Param('id') id: string) {
-    return this.productService.getProductById(Number(id));
+  async getProductById(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.getProductById(id);
   }
 
   @Post()
@@ -27,18 +33,18 @@ export class ProductController {
 
   @Patch(':id')
   patchProduct(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() patchProductDto: PatchProductDto) {
     // Logic to update the product with the given id using the data from updateProductDto
     // You can implement this logic in the ProductService
-    return this.productService.patchProduct(Number(id), patchProductDto);
+    return this.productService.patchProduct(id, patchProductDto);
   } 
 
   @Delete(':id')
-  deleteProduct(@Param('id') id: string) {
+  deleteProduct(@Param('id', ParseIntPipe) id: number) {
     // Logic to delete the product with the given id
     // You can implement this logic in the ProductService
-    return this.productService.deleteProduct(Number(id));
+    return this.productService.deleteProduct(id);
   }
 
 }

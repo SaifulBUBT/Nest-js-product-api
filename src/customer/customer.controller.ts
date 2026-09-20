@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
@@ -27,8 +28,8 @@ export class CustomerController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getCustomerById(@Param('id') id: string) {
-    return this.customerService.getCustomerById(Number(id));
+  async getCustomerById(@Param('id', ParseIntPipe) id: number) {
+    return this.customerService.getCustomerById(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,30 +42,30 @@ export class CustomerController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateCustomer(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
     // Logic to update the customer with the given id using the data from updateCustomerDto
     // You can implement this logic in the CustomerService
-    return this.customerService.updateCustomer(Number(id), updateCustomerDto);
+    return this.customerService.updateCustomer(id, updateCustomerDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async patchCustomer(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() patchCustomerDto: PatchCustomerDto,
   ) {
     // Logic to partially update the customer with the given id using the data from updateCustomerDto
     // You can implement this logic in the CustomerService
-    return this.customerService.patchCustomer(Number(id), patchCustomerDto);
+    return this.customerService.patchCustomer(id, patchCustomerDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteCustomer(@Param('id') id: string) {
+  async deleteCustomer(@Param('id', ParseIntPipe) id: number) {
     // Logic to delete the customer with the given id
     // You can implement this logic in the CustomerService
-    return this.customerService.deleteCustomer(Number(id));
+    return this.customerService.deleteCustomer(id);
   }
 }

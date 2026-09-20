@@ -5,42 +5,84 @@ import { PatchProductDto } from './dto/patch-product.dto.js';
 
 import { DatabaseService } from '../database/database.service.js';
 import { Product } from './interfaces/product.interface.js';
+import { ProductQueryDto } from './dto/product-query.dto.js';
 
 @Injectable()
 export class ProductService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  private products = [
-    {
-      id: 1,
-      title: 'iPhone 17',
-      price: 999,
-      stock: 10,
-    },
-    {
-      id: 2,
-      title: 'MacBook Pro',
-      price: 1999,
-      stock: 5,
-    },
-    {
-      id: 3,
-      title: 'AirPods Pro',
-      price: 249,
-      stock: 20,
-    },
-  ];
+  // private products = [
+  //   {
+  //     id: 1,
+  //     title: 'iPhone 17',
+  //     price: 999,
+  //     stock: 10,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'MacBook Pro',
+  //     price: 1999,
+  //     stock: 5,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'AirPods Pro',
+  //     price: 249,
+  //     stock: 20,
+  //   },
+  // ];
 
 
-  async getAllProducts(): Promise<Product[]> {
+  async getAllProducts(query: ProductQueryDto): Promise<Product[]> {
     // return this.products;
 
+    const {
+      page = 1,
+      limit = 10,
+      search,
+    } = query;
+
+    const offset = (page - 1) * limit;
+
+    console.log({ page, limit, offset, search });
+
     // Fetch products from the database using the DatabaseService
+    // const result = await this.databaseService.query(
+    //   'SELECT * FROM products'
+    // );
+
+    let dataQuery = `
+      SELECT *
+      FROM products
+    `;
+
+     const values: unknown[] = [];
+
+    if (search) {
+      dataQuery += `
+        WHERE title ILIKE $1
+      `;
+
+      values.push(`%${search}%`);
+    }
+
+    dataQuery += `
+      ORDER BY id ASC
+      LIMIT $${values.length + 1}
+      OFFSET $${values.length + 2}
+    `;
+
+    values.push(limit, offset);
+
     const result = await this.databaseService.query(
-      'SELECT * FROM products'
+      dataQuery,
+      values,
     );
+
     return result.rows;
   }
+
+
 
   async getProductById(id: number): Promise<Product> {
     // const product = this.products.find((product) => product.id === id);

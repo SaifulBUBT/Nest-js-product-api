@@ -13,6 +13,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // DTO-তে যেসব property define করা নেই, সেগুলো remove করে দেওয়া।
       forbidNonWhitelisted: true, // DTO-তে নেই এমন property পেলে silently remove করবে না; বরং 400 Bad Request error দেবে।
+      transform: true
     })
   );
 
