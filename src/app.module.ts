@@ -3,11 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { ProductModule } from './product/product.module.js';
-import { CustomerModule } from './customer/customer.module.js';
-import { DatabaseService } from './database/database.service.js';
-import { DatabaseModule } from './database/database.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { CustomerModule } from './customer/customer.module.js';
+import { DatabaseModule } from './database/database.module.js';
+import { DatabaseService } from './database/database.service.js';
+import { MynameController } from './myname/myname.controller.js';
+import { ProductModule } from './product/product.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -28,7 +29,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     DatabaseModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MynameController],
   providers: [AppService, DatabaseService],
 })
 export class AppModule {}
