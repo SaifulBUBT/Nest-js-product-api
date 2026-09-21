@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UppercasePipe } from '../commom/pipes/uppercase/uppercase.pipe.js';
+import { UppercasePipe } from '../common/pipes/uppercase/uppercase.pipe.js';
 
 @Controller('myname')
 export class MynameController {

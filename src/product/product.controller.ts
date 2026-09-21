@@ -4,6 +4,7 @@ import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 import { PatchProductDto } from './dto/patch-product.dto.js';
 import { ProductQueryDto } from './dto/product-query.dto.js';
+import { PositiveIntPipe } from '../common/pipes/positive-int/positive-int.pipe.js';
 
 @Controller('products')
 export class ProductController {
@@ -20,7 +21,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  async getProductById(@Param('id', ParseIntPipe) id: number) {
+  async getProductById(@Param('id', new PositiveIntPipe()) id: number) {
     return this.productService.getProductById(id);
   }
 

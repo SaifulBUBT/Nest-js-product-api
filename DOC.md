@@ -71,3 +71,4 @@ GET /product/25?sort=price&order=desc
 
 // Custom Pipe
 nest g pipe common/pipes/uppercase --no-spec
+nest g pipe common/pipes/parse-int --no-spec
